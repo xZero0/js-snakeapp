@@ -1,13 +1,11 @@
 extends layout
 
 block content
-  .container.text-center
+  .container.container-fluid.text-center
     .container(id="div-display")
     .container
       span score
     .container
       p Using arrow key to turn the snake.
       
-  script(src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js")
   script(src="/javascripts/game-snake.js")
-  script(src="/javascripts/snake.js")
