@@ -10,15 +10,18 @@ body
       .container
         .row
           .col
+            span.lead Player :
+          .col.text-right 
+            span.lead(id="score-label") HI
+        .row
+          .col
             span.lead Using 
             kbd Arrow
             span.lead  keys 
             span.lead  to play or 
             kbd Click
             span.lead  on screen.
-          .col.text-right 
-            span.lead(id="score-label") HI
-
+      
       script(src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js")
       script(src="/javascripts/snake.js")
       script(src="/javascripts/game-snake.js")
