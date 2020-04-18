@@ -18,6 +18,9 @@ function setup() {
   }
 
   sysBlocksize = 10*window.devicePixelRatio;
+  if(window.devicePixelRatio > 1){
+    sysBlocksize = 10*window.devicePixelRatio*0.6;
+  }
   if(sysWidth/sysBlocksize > 60){
     sysWidth = 600;
     sysHeight = 600;
@@ -47,13 +50,18 @@ function draw() {
     initFood(sysBlocksize);
   }
 
-  //updateLabels(score);
+  updateLabels(score);
 
   checkOutScreen();
   checkLavel();
 
   checkDeath();
   sn1.update();
+}
+
+function updateLabels(score){
+  var sLabel = document.getElementById('score-label');
+  sLabel.innerHTML = 'HI : ' + maxscore + ",   " + score;			
 }
 
 function checkDeath(){
