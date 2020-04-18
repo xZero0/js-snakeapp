@@ -1,0 +1,19 @@
+
+doctype html
+html
+  include common/head.pug
+  +head("The Snake Game")
+  
+body
+    block content
+      div.bg-light.text-center(id="sketch-div")
+      .container
+        p.lead(id="score-label") HI 0000, 0000
+        span.lead Using arrow key or click to turn the snake.
+          
+      script(src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js")
+      script(src="/javascripts/snake.js")
+      script(src="/javascripts/game-snake.js")
+      
+      include common/footer.pug
+      +footer()

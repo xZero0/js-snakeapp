@@ -1,5 +1,5 @@
 class snake {
-  constructor(inlength){
+  constructor(){
     this.bsize = 10;
     this.tail = [];
     this.x = 0;
@@ -8,7 +8,7 @@ class snake {
     this.xmove = 1;
     this.ymove = 0;
 
-    this.length = inlength;
+    this.length = 2;
     for(let i = 0; i < this.length; i++){
       append(this.tail, createVector(this.x, this.y));
     }
@@ -25,7 +25,7 @@ class snake {
 
   isTail(inx, iny){
     for(let i=0; i<this.tail.length; i++){
-      if(dist(inx, iny, this.tail[i].x, this.tail[i].y) < this.bsize){
+      if(dist(inx, iny, this.tail[i].x, this.tail[i].y) < this.bsize*0.8){
         return true;
       }
     }
@@ -52,6 +52,46 @@ class snake {
       this.xmove = 0;
       this.ymove = iny;
     }  
+  }
+  
+  movec(){
+    if(this.xmove == 0){
+      if(this.ymove > 0){
+        this.xmove = -1;
+        this.ymove = 0;
+      } else {
+        this.xmove = 1;
+        this.ymove = 0;
+      } 
+    } else {
+      if(this.xmove < 0 ){
+        this.xmove = 0;
+        this.ymove = -1;
+      } else {
+        this.xmove = 0;
+        this.ymove = 1;
+      } 
+    }
+  }
+
+  movecc(){
+    if(this.xmove == 0){
+      if(this.ymove > 0){
+        this.xmove = 1;
+        this.ymove = 0;
+      } else {
+        this.xmove = -1;
+        this.ymove = 0;
+      } 
+    } else {
+      if(this.xmove < 0 ){
+        this.xmove = 0;
+        this.ymove = 1;
+      } else {
+        this.xmove = 0;
+        this.ymove = -1;
+      } 
+    }
   }
 
   update(){

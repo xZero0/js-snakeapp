@@ -1,10 +1,32 @@
+
+sysTotalBlock = 60;
 sysBlocksize = 10;
-sysWidth = 400;
-sysHight = 400;
+sysWidth = 500;
+sysWidth = 500;
+
 
 function setup() {
-  var canvas = createCanvas(sysWidth, sysHight);
-  canvas.parent('div-display');
+  var w = innerWidth;
+  var h = innerHeight;
+  
+  if(w > h){
+    sysWidth = h;
+    sysHeight = h;
+  } else {
+    sysWidth = w;
+    sysHeight = w;
+  }
+
+  sysBlocksize = 10*window.devicePixelRatio;
+  if(sysWidth/sysBlocksize > 60){
+    sysWidth = 600;
+    sysHeight = 600;
+  }
+
+  sysTotalBlock = sysWidth/sysBlocksize;
+
+  canvas = createCanvas(sysWidth, sysHeight);
+  canvas.parent('sketch-div');
   frameRate(10);
 
   score = 0;
@@ -18,8 +40,6 @@ function draw() {
   background(40);
 
   sn1.draw();
-  sn1.update();
-
   fl1.draw();
 
   if(sn1.getFood(fl1)){
@@ -27,13 +47,19 @@ function draw() {
     initFood(sysBlocksize);
   }
 
+  //updateLabels(score);
+
   checkOutScreen();
-  checkDeath();
   checkLavel();
+
+  checkDeath();
+  sn1.update();
 }
 
 function checkDeath(){
-  if(sn1.isTail(sn1.x, sn1.y)){
+  var x = sn1.x;
+  var y = sn1.y;
+  if(sn1.isTail(x, y)){
     initSnake();
   } 
 }
@@ -77,14 +103,25 @@ function keyPressed() {
     sn1.move(0, -1);
   } else if (keyCode === DOWN_ARROW) {
     sn1.move(0, 1);
+  } else if (keyCode === 190) { //Clockwise play by '.' ( > key)
+    sn1.movec();
+  } else if (keyCode === 32) { //Clockwise play by ' ' or space bar
+    sn1.movec();
+  } else if (keyCode === 188) { //Counter clockwise play by ',' ( < key)
+    sn1.movecc();
   }
 }
 
-function initSnake(){
-  snHeadx = int(random(0, 40)*sysBlocksize);
-  snHeady = int(random(0, 40)*sysBlocksize);
+//Clockwise play by mouseClicked
+function mouseClicked() {
+  sn1.movec();
+}
 
-  sn1 = new snake(2);
+function initSnake(){
+  snHeadx = int(random(0, sysTotalBlock)*sysBlocksize);
+  snHeady = int(random(0, sysTotalBlock)*sysBlocksize);
+
+  sn1 = new snake();
   sn1.setBlockSize(sysBlocksize);
   sn1.setLocation(snHeadx, snHeady);
 
@@ -95,22 +132,23 @@ function initSnake(){
 }
 
 function initFood(){
-  fl1 = new food(sysBlocksize);
+  fl1 = new food(sysTotalBlock, sysBlocksize);
   if(isFoodOnSnake()){
-    fl1 = new food(sysBlocksize);
+    fl1 = new food(sysTotalBlock, sysBlocksize);
   }
 }
 
 class food {
-  constructor(size){
-    this.bsize = size;
+  constructor(totalblock, blocksize){
+    this.bsize = blocksize;
     this.score = 1;
 
-    this.x = int(random(0, 40))*sysBlocksize;
-    this.y = int(random(0, 40))*sysBlocksize;
+    this.x = int(random(0, totalblock-1))*this.bsize;
+    this.y = int(random(0, totalblock-1))*this.bsize;
   }
+
   draw(){
     fill(color(255,0,0));
-    rect(this.x, this.y, 10, 10);
+    rect(this.x, this.y, this.bsize, this.bsize);
   }
 }
