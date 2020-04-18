@@ -92,13 +92,13 @@ function checkOutScreen(){
 
 function checkLavel(){
   if(score >= 10){
-    frameRate(11);
+    frameRate(13);
   } else if(score >= 20){
-    frameRate(15);
+    frameRate(22);
   } else if(score >= 50){
-    frameRate(20);
+    frameRate(28);
   } else if(score >= 100){
-    frameRate(25);
+    frameRate(33);
   }
 }
 
