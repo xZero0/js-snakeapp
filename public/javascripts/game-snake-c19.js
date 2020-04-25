@@ -75,13 +75,11 @@ function draw() {
   sn1.update();
 }
 
-
 function initGame(){
-  score = 0;
   sysOverGame = 0;
   sysBonusFag = 0;
   sysC19Fag = 0;
-  
+  score = 0;
 }
 
 function initSnake(){
@@ -97,6 +95,7 @@ function initSnake(){
   if(score > maxscore){
     maxscore = score;
   }
+
   score = 0;
   sn1.infect = 0;
 }
@@ -214,9 +213,9 @@ function checkLavel(){
   } else if(score >= 20){
     frameRate(22);
   } else if(score >= 50){
-    frameRate(28);
+    frameRate(38);
   } else if(score >= 100){
-    frameRate(33);
+    frameRate(43);
   }
 }
 
