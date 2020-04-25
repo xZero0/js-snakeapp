@@ -116,12 +116,17 @@ class snake {
 }
 
 class food {
-  constructor(totalblock, blocksize){
+  constructor(blocksize){
     this.bsize = blocksize;
     this.score = 1;
 
-    this.x = int(random(0, totalblock-1))*this.bsize;
-    this.y = int(random(0, totalblock-1))*this.bsize;
+    this.x = 0;
+    this.y = 0;
+  }
+
+  setLocation(inx, iny) {
+    this.x = inx;
+    this.y = iny;
   }
 
   draw(){
@@ -131,8 +136,8 @@ class food {
 }
 
 class bonusfood extends food {
-  constructor(totalblock, blocksize){
-    super(totalblock, blocksize)
+  constructor(blocksize){
+    super(blocksize)
     this.score = 3;
     this.bring = 0;
     this.time = 0;

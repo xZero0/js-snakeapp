@@ -1,23 +1,7 @@
-
-sysTotalBlock = 60;
-sysBlocksize = 10;
-sysWidth = 500;
-sysWidth = 500;
-
-sysBonusFag = 0;
-
 function setup() {
-  var w = innerWidth;
-  var h = innerHeight;
-
-  if(w > h){
-    sysWidth = h;
-    sysHeight = h;
-  } else {
-    sysWidth = w;
-    sysHeight = w;
-  }
-
+  sysWidth = 0;
+  sysHeight = 0;
+  sysBonusFag = 0;
   maxscore = 0;
 
   initGame();
@@ -57,9 +41,90 @@ function draw() {
   sn1.update();
 }
 
-function updateLabels(score){
-  var sLabel = document.getElementById('score-label');
-  sLabel.innerHTML = 'HI : ' + maxscore + ",   " + score;			
+
+function initGame(){
+  var w = innerWidth;
+  var h = innerHeight;
+
+  //Set 4:3 sceen
+  if(w > h){
+    sysWidth = h;
+    sysHeight = h*0.75;
+  } else {
+    sysWidth = w;
+    sysHeight = w*0.75; 
+  }
+  
+  // block 2x2 mm, 1 pixcel/mm 
+  sysBlocksize = 10;
+
+  sysTotalBlock = sysWidth/sysBlocksize;
+  canvas = createCanvas(sysWidth, sysHeight);
+  canvas.parent('sketch-div');
+  frameRate(10);
+
+  score = 0;
+  sysOverGame = 0;
+  sysBonusFag = 0;
+  
+  loop();
+}
+
+function initSnake(){
+  bw = sysWidth/sysBlocksize;
+  bh = sysHeight/sysBlocksize;
+  snHeadx = int(random(0, bw-1)*sysBlocksize);
+  snHeady = int(random(0, bh-1)*sysBlocksize);
+
+  sn1 = new snake();
+  sn1.setBlockSize(sysBlocksize);
+  sn1.setLocation(snHeadx, snHeady);
+
+  if(score > maxscore){
+    maxscore = score;
+  }
+  score = 0;
+}
+
+function initFood(){
+  bw = sysWidth/sysBlocksize;
+  bh = sysHeight/sysBlocksize;
+  setx = int(random(0, bw-1)*sysBlocksize);
+  sety = int(random(0, bh-1)*sysBlocksize);
+
+  fl1 = new food(sysBlocksize);
+  if(isFoodOnSnake()){
+    fl1 = new food(sysBlocksize);
+  }
+  fl1.setLocation(setx, sety);
+}
+
+function initBonusFood(){  
+  bw = sysWidth/sysBlocksize;
+  bh = sysHeight/sysBlocksize;
+  setx = int(random(0, bw-1)*sysBlocksize);
+  sety = int(random(0, bh-1)*sysBlocksize);
+  
+  bo1 = new bonusfood(sysBlocksize*1.2);
+  if(isFoodOnSnake(bo1)){
+    bo1 = new bonusfood(sysBlocksize*1.2);
+  }
+  bo1.setLocation(setx, sety);
+  bo1.time = int(random(80,120));
+  sysBonusFag = 1;
+}
+
+function updateBonus(){
+  //The bonus food will enable after you gain more than 5 score.
+  if(score > 5) {
+    if(bo1.time == 60){
+      sysBonusFag = 2;  
+    } else if(bo1.time == 0){
+      initBonusFood();
+    }
+
+    bo1.time = bo1.time - 1;
+  } 
 }
 
 function checkDeath(){
@@ -82,8 +147,8 @@ function checkOutScreen(){
   }
 
   if(sn1.y < 0){
-    sn1.setLocation(sn1.x, sysWidth-sysBlocksize);
-  } else if (sn1.y > sysWidth-sysBlocksize){
+    sn1.setLocation(sn1.x, sysHeight-sysBlocksize);
+  } else if (sn1.y > sysHeight-sysBlocksize){
     sn1.setLocation(sn1.x, 0);
   }
 }
@@ -124,65 +189,4 @@ function keyPressed() {
 //Clockwise play by mouseClicked
 function mouseClicked() {
   sn1.movec();
-}
-
-function initGame(){
-  sysBlocksize = 10*window.devicePixelRatio;
-  if(sysWidth/sysBlocksize > 60){
-    sysWidth = 600;
-    sysHeight = 600;
-  }
-
-  sysTotalBlock = sysWidth/sysBlocksize;
-  canvas = createCanvas(sysWidth, sysHeight);
-  canvas.parent('sketch-div');
-  frameRate(10);
-
-  score = 0;
-  sysOverGame = 0;
-  sysBonusFag = 0;
-  
-  loop();
-}
-
-function initSnake(){
-  snHeadx = int(random(0, sysTotalBlock)*sysBlocksize);
-  snHeady = int(random(0, sysTotalBlock)*sysBlocksize);
-
-  sn1 = new snake();
-  sn1.setBlockSize(sysBlocksize);
-  sn1.setLocation(snHeadx, snHeady);
-
-  if(score > maxscore){
-    maxscore = score;
-  }
-  score = 0;
-}
-
-function initFood(){
-  fl1 = new food(sysTotalBlock, sysBlocksize);
-  if(isFoodOnSnake()){
-    fl1 = new food(sysTotalBlock, sysBlocksize);
-  }
-}
-
-function initBonusFood(){  
-  bo1 = new bonusfood(sysTotalBlock, sysBlocksize);
-  if(isFoodOnSnake(bo1)){
-    bo1 = new bonusfood(sysTotalBlock, sysBlocksize);
-  }
-  bo1.time = int(random(80,120));
-  sysBonusFag = 1;
-}
-
-function updateBonus(){
-  if(score > 1) {
-    if(bo1.time == 60){
-      sysBonusFag = 2;
-    } else if(bo1.time == 0){
-      initBonusFood();
-    }
-
-    bo1.time = bo1.time - 1;
-  } 
 }
