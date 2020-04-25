@@ -1,0 +1,40 @@
+
+doctype html
+html
+  include common/head.pug
+  +head("The Snake Game")
+
+  script(src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js")
+  script(src="/javascripts/snake.js")
+  script(src="/javascripts/game-snake-c19.js")
+
+  script.
+    $( document ).ready(function() {
+      setInterval(function(){
+        $('#score-label').text('HI : ' + maxscore + ",   " + score)
+      }, 300);
+    });
+
+body
+    block content
+      .container
+        .row
+          .col
+            span.lead Player :
+          .col.text-right 
+            span.lead(id="score-label") HI
+
+      div.bg-light.text-center(id="sketch-div")
+
+      .container
+        .row
+          .col
+            span.lead Using 
+            kbd Arrow
+            span.lead  keys 
+            span.lead  to play or 
+            kbd Click
+            span.lead  on screen.
+      
+      include common/footer.pug
+      +footer()

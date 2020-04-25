@@ -10,6 +10,10 @@ router.get('/snake', function(req, res, next) {
   res.render('snake', { title: 'The Snake Game' });
 });
 
+router.get('/snakec19', function(req, res, next) {
+  res.render('snakec19', { title: 'The Snake Game - COVID19' });
+});
+
 router.post('/snake-info', function(req, res, next) {
   res.send({ name: 'Snake1' });
 });
