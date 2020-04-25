@@ -114,3 +114,43 @@ class snake {
     rect(this.x, this.y, this.bsize, this.bsize);
   }
 }
+
+class food {
+  constructor(totalblock, blocksize){
+    this.bsize = blocksize;
+    this.score = 1;
+
+    this.x = int(random(0, totalblock-1))*this.bsize;
+    this.y = int(random(0, totalblock-1))*this.bsize;
+  }
+
+  draw(){
+    fill(color(255,0,0));
+    rect(this.x, this.y, this.bsize, this.bsize);
+  }
+}
+
+class bonusfood extends food {
+  constructor(totalblock, blocksize){
+    super(totalblock, blocksize)
+    this.score = 3;
+    this.bring = 0;
+    this.time = 0;
+  }
+
+  draw(){
+    let c = color(255, 204, 0);
+
+    if(this.bring > 3){
+      c = color(51);
+      this.bring = 0;
+    } else {
+      c = color(255, 204, 0);
+      this.bring++;
+    }
+    
+    fill(c);
+    rect(this.x, this.y, this.bsize+this.bring, this.bsize+this.bring);
+
+  }
+}

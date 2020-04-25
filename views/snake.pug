@@ -3,7 +3,12 @@ doctype html
 html
   include common/head.pug
   +head("The Snake Game")
-  
+  script.
+    $( document ).ready(function() {
+          setInterval(function(){
+            $('#score-label').text('HI : ' + maxscore + ",   " + score)
+          }, 300);
+          
 body
     block content
       div.bg-light.text-center(id="sketch-div")

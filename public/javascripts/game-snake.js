@@ -4,11 +4,12 @@ sysBlocksize = 10;
 sysWidth = 500;
 sysWidth = 500;
 
+sysBonusFag = 0;
 
 function setup() {
   var w = innerWidth;
   var h = innerHeight;
-  
+
   if(w > h){
     sysWidth = h;
     sysHeight = h;
@@ -17,26 +18,13 @@ function setup() {
     sysHeight = w;
   }
 
-  sysBlocksize = 10*window.devicePixelRatio;
-  if(window.devicePixelRatio > 1){
-    sysBlocksize = 10*window.devicePixelRatio*0.6;
-  }
-  if(sysWidth/sysBlocksize > 60){
-    sysWidth = 600;
-    sysHeight = 600;
-  }
-
-  sysTotalBlock = sysWidth/sysBlocksize;
-
-  canvas = createCanvas(sysWidth, sysHeight);
-  canvas.parent('sketch-div');
-  frameRate(10);
-
-  score = 0;
   maxscore = 0;
 
-  initSnake(sysBlocksize);
-  initFood(sysBlocksize);
+  initGame();
+ 
+  initSnake();
+  initFood();
+  initBonusFood();
 }
 
 function draw() {
@@ -44,13 +32,23 @@ function draw() {
 
   sn1.draw();
   fl1.draw();
+  if(sysBonusFag == 2){
+    bo1.draw();
+  }
 
   if(sn1.getFood(fl1)){
     score = score + fl1.score;
-    initFood(sysBlocksize);
+    initFood();
   }
 
-  updateLabels(score);
+  if(sysBonusFag == 2){
+    if(sn1.getFood(bo1)){
+      score = score + bo1.score;
+      initBonusFood();
+    }
+  }
+
+  updateBonus();
 
   checkOutScreen();
   checkLavel();
@@ -117,12 +115,34 @@ function keyPressed() {
     sn1.movec();
   } else if (keyCode === 188) { //Counter clockwise play by ',' ( < key)
     sn1.movecc();
+  } else if (key === 's') { 
+    initGame();
+    initSnake();
   }
 }
 
 //Clockwise play by mouseClicked
 function mouseClicked() {
   sn1.movec();
+}
+
+function initGame(){
+  sysBlocksize = 10*window.devicePixelRatio;
+  if(sysWidth/sysBlocksize > 60){
+    sysWidth = 600;
+    sysHeight = 600;
+  }
+
+  sysTotalBlock = sysWidth/sysBlocksize;
+  canvas = createCanvas(sysWidth, sysHeight);
+  canvas.parent('sketch-div');
+  frameRate(10);
+
+  score = 0;
+  sysOverGame = 0;
+  sysBonusFag = 0;
+  
+  loop();
 }
 
 function initSnake(){
@@ -146,17 +166,23 @@ function initFood(){
   }
 }
 
-class food {
-  constructor(totalblock, blocksize){
-    this.bsize = blocksize;
-    this.score = 1;
-
-    this.x = int(random(0, totalblock-1))*this.bsize;
-    this.y = int(random(0, totalblock-1))*this.bsize;
+function initBonusFood(){  
+  bo1 = new bonusfood(sysTotalBlock, sysBlocksize);
+  if(isFoodOnSnake(bo1)){
+    bo1 = new bonusfood(sysTotalBlock, sysBlocksize);
   }
+  bo1.time = int(random(80,120));
+  sysBonusFag = 1;
+}
 
-  draw(){
-    fill(color(255,0,0));
-    rect(this.x, this.y, this.bsize, this.bsize);
-  }
+function updateBonus(){
+  if(score > 1) {
+    if(bo1.time == 60){
+      sysBonusFag = 2;
+    } else if(bo1.time == 0){
+      initBonusFood();
+    }
+
+    bo1.time = bo1.time - 1;
+  } 
 }
