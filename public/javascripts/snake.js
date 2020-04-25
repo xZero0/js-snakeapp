@@ -32,9 +32,9 @@ class snake {
     return false;
   }
 
-  getFood(po){
-    var dis = dist(this.x, this.y, po.x, po.y);
-    if(dis < this.bsize){
+  getFood(food){
+    var dis = dist(this.x, this.y, food.x, food.y);
+    if(dis < food.bsize){
       this.length++;
       return true;
     } else {
