@@ -5,6 +5,8 @@ class snake {
     this.x = 0;
     this.y = 0;
 
+    this.infect = 0;
+
     this.xmove = 1;
     this.ymove = 0;
 
@@ -94,15 +96,15 @@ class snake {
     }
   }
 
-  setInfection(){
-    this.infect++;
+  setInfection(innum){
+    this.infect=innum;
   }
   
   getInfection(){
     if(this.infect > 0){
-      return true;
+      return this.infect;
     } else {
-      return false;
+      return 0;
     }
   }
 
@@ -124,6 +126,10 @@ class snake {
     }
     this.tail[this.length-1] = createVector(this.x, this.y);
 
+    if(this.infect > 0){
+      this.infect = this.infect+1;
+    }
+
     this.x = this.x + this.xmove*this.bsize;
     this.y = this.y + this.ymove*this.bsize;
   }
@@ -134,7 +140,7 @@ class snake {
     let c = color(100, 50, 150);
 
     for(let i = 0; i < this.tail.length; i++){
-      if(this.getInfection()){
+      if(this.getInfection() > 0){
         c.setAlpha(128 + 128 * sin(this.infect));
         fill(c);
       }

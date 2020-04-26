@@ -4,6 +4,7 @@ function setup() {
   sysBonusFag = 0;
   sysC19Fag = 0;
   maxscore = 0;
+  score = 0;
 
   var w = innerWidth;
   var h = innerHeight;
@@ -46,13 +47,14 @@ function draw() {
 
   if(sn1.getFood(fl1)){
     score = score + fl1.score;
+    sn1.heal(fl1.score*10);
     initFood();
   }
 
   if(sysBonusFag == 2){
     if(sn1.getFood(bo1)){
       score = score + bo1.score;
-      sn1.heal(bo1.score*30);
+      sn1.heal(bo1.score*50);
       initBonusFood();
     }
   }
@@ -60,7 +62,7 @@ function draw() {
   if(sysC19Fag == 2){
     if(sn1.getFood(c19)){
       score = score + c19.score;
-      sn1.setInfection();
+      sn1.setInfection(100);
       initCovidFood();
     }
   }
@@ -76,10 +78,7 @@ function draw() {
 }
 
 function initGame(){
-  sysOverGame = 0;
-  sysBonusFag = 0;
-  sysC19Fag = 0;
-  score = 0;
+  frameRate(10);
 }
 
 function initSnake(){
@@ -125,7 +124,7 @@ function initBonusFood(){
   }
   bo1.setLocation(setx, sety);
   bo1.time = int(random(80,120));
-  sysBonusFag = 1;
+  sysBonusFag = 0;
 }
 
 
@@ -141,15 +140,15 @@ function initCovidFood(){
     }
     c19.setLocation(setx, sety);
     c19.time = int(random(120,140));
-    sysC19Fag = 1;
+    sysC19Fag = 0;
 }
 
 function gameOver(){
-    initGame();
-    initSnake();
-    initFood();
-    initBonusFood();
-    initCovidFood();
+  initGame();
+  initSnake();
+  initFood();
+  initBonusFood();
+  initCovidFood();
 }
 
 function updateBonus(){
@@ -184,7 +183,7 @@ function checkDeath(){
     gameOver();
   }
 
-  if(sn1.infect > 200){
+  if(sn1.getInfection() > 300){
     gameOver();
   }
 }

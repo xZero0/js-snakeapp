@@ -13,16 +13,29 @@ html
       setInterval(function(){
         $('#score-label').text('HI : ' + maxscore + ",   " + score)
       }, 300);
+
+      setInterval(function(){
+        let c19 = sn1.getInfection();
+        if(c19 > 0){
+            $('#bonus-label').text('COVID-19 : ' + (300-c19));
+        } else {
+          if(sysBonusFag == 2){
+            $('#bonus-label').text('Bonus : ' + bo1.time);
+          } else {
+            $('#bonus-label').text(' ');
+          }
+        }
+      }, 300);
     });
 
 body
     block content
       .container
         .row
-          .col
-            span.lead Player :
-          .col.text-right 
+          .col.text-left
             span.lead(id="score-label") HI
+          .col.text-right
+            span.lead(id="bonus-label") 
 
       div.bg-light.text-center(id="sketch-div")
 
